@@ -21,7 +21,20 @@ def on_subscribe(client, userdata, mid, granted_qos, properties=None):
 
 # print message, useful for checking if it was successful
 def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+   print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+   mensage_decodificado = (msg.payload).decode() 
+
+   if(mensage_decodificado== "start"):
+      starting()
+   elif(mensage_decodificado== "detener"):
+      stoping()
+
+
+def starting(): 
+    print("Comenzando el programa")
+
+def stoping(): 
+    print("Deteniendo el programa")
 
 # using MQTT version 5 here, for 3.1.1: MQTTv311, 3.1: MQTTv31
 # userdata is user defined data of any type, updated by user_data_set()
@@ -43,5 +56,16 @@ client.on_publish = on_publish
 
 # subscribe to all topics of encyclopedia by using the wildcard "#"
 client.subscribe("Arduino/MQTT", qos=1)
+i=0
+seguir=True
+client.loop_start()
+while(seguir):
+	if(i<90000):
+		i=+1
+		#print(i)
+	else:
+		seguir=False
+client.loop_stop()
 
-client.loop_forever()
+
+
